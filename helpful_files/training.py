@@ -70,6 +70,7 @@ class ProtoSampler(Sampler):
         while len(trackdict.keys()) >= self.way:
             # Draw categories proportional to current size
             pcount = np.array([len(trackdict[k]) for k in list(trackdict.keys())])
+            pcount = np.array([float(x) for x in pcount])
             cats = np.random.choice(list(trackdict.keys()), size=self.way, replace=False, p=pcount/sum(pcount))
             for shot in self.shots:
                 for cat in cats:

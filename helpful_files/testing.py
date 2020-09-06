@@ -7,11 +7,13 @@ from copy import deepcopy
 from PIL import Image
 from torch.utils.data import Sampler
 from helpful_files.networks import fbpredict, predict
-
+import os
 
 
 def load_transform(path, boxdict, transform, masking):
     # Load the image
+    os.chdir('..')
+    print(os.getcwd())
     with open(path, 'rb') as f:
         p = Image.open(f)
         p = p.convert('RGB')
