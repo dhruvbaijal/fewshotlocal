@@ -12,8 +12,7 @@ import os
 
 def load_transform(path, boxdict, transform, masking):
     # Load the image
-    os.chdir('..')
-    print(os.getcwd())
+#     os.chdir('..')
     with open(path, 'rb') as f:
         p = Image.open(f)
         p = p.convert('RGB')

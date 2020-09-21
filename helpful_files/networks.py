@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torch.nn.parameter import Parameter
+import math
 
 
 class Block(nn.Module):
@@ -33,7 +34,8 @@ class PROTO(nn.Module):
         )
         
     def forward(self, inp):
-        return self.process(inp)
+#         return self.process(inp)
+        return self.process(inp)/math.sqrt(w)
 
     
 #-----------PREDICTORS
