@@ -35,7 +35,7 @@ class PROTO(nn.Module):
         
     def forward(self, inp):
 #         return self.process(inp)
-        return self.process(inp)/math.sqrt(w)
+        return self.process(inp)/math.sqrt(64)
 
     
 #-----------PREDICTORS
@@ -137,7 +137,7 @@ class pL(nn.Module):
     def __init__(self, w):
         super(pL, self).__init__()
         self.sm = nn.Softmax(dim=2)
-        self.centroids = Parameter(torch.randn(1,w,2,1,1))
+        self.centroids = Parameter(torch.randn(1,w,2,1,1)/math.sqrt(64))
         
     def forward(self, inp, _, __):
         masks = torch.sum((inp.unsqueeze(2)-self.centroids)**2, 1).neg().unsqueeze(1) # B 1 2 10 10
@@ -153,7 +153,7 @@ class pCL(nn.Module):
     def __init__(self, w):
         super(pCL, self).__init__()
         self.sm = nn.Softmax(dim=2)
-        self.centroids = Parameter(torch.randn(1,w,2,1,1))
+        self.centroids = Parameter(torch.randn(1,w,2,1,1)/math.sqrt(64))
         
     def forward(self, inp, _, __):
         b = inp.size(0)
