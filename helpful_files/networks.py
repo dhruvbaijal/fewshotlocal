@@ -34,8 +34,7 @@ class PROTO(nn.Module):
         )
         
     def forward(self, inp):
-#         return self.process(inp)
-        return self.process(inp)/math.sqrt(64)
+        return self.process(inp)
 
     
 #-----------PREDICTORS
@@ -137,7 +136,7 @@ class pL(nn.Module):
     def __init__(self, w):
         super(pL, self).__init__()
         self.sm = nn.Softmax(dim=2)
-        self.centroids = Parameter(torch.randn(1,w,2,1,1)/math.sqrt(64))
+        self.centroids = Parameter(torch.randn(1,w,2,1,1))
         
     def forward(self, inp, _, __):
         masks = torch.sum((inp.unsqueeze(2)-self.centroids)**2, 1).neg().unsqueeze(1) # B 1 2 10 10
@@ -153,7 +152,7 @@ class pCL(nn.Module):
     def __init__(self, w):
         super(pCL, self).__init__()
         self.sm = nn.Softmax(dim=2)
-        self.centroids = Parameter(torch.randn(1,w,2,1,1)/math.sqrt(64))
+        self.centroids = Parameter(torch.randn(1,w,2,1,1))
         
     def forward(self, inp, _, __):
         b = inp.size(0)
@@ -174,8 +173,12 @@ class avgpool(nn.Module):
         self.pool = nn.AvgPool2d(10)
         
     def forward(self, inp, _, __):
-        return self.pool(inp).view(inp.size(0), inp.size(1))
-        
+        b = inp.size(0)
+        out = self.pool(inp).view(inp.size(0), inp.size(1))
+        l2_norm = out.pow(2).sum(1).sqrt()
+        l2_norm_broadcast = l2_norm.view(b,1).repeat(1,inp.shape[1])
+        return out/l2_norm_broadcast
+
 
 #-----------FEATURE EXPANDERS AND POOLING OPERATIONS, TEST TIME ONLY
 
