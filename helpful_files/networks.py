@@ -39,6 +39,8 @@ class PROTO(nn.Module):
     
 #-----------PREDICTORS
 
+# TODO: write predict functions using SVM (sci-kit), L2-norm nearest-neighbors, arg to predict fxn
+# will be list of all tensors rather than centroids
 
 # Basic prototype prediction
 def predict(centroids, query):
@@ -173,11 +175,14 @@ class avgpool(nn.Module):
         self.pool = nn.AvgPool2d(10)
         
     def forward(self, inp, _, __):
-        b = inp.size(0)
-        out = self.pool(inp).view(inp.size(0), inp.size(1))
-        l2_norm = out.pow(2).sum(1).sqrt()
-        l2_norm_broadcast = l2_norm.view(b,1).repeat(1,inp.shape[1])
-        return out/l2_norm_broadcast
+        
+        return self.pool(inp).view(inp.size(0), inp.size(1))
+#         uncomment for L2norm
+#         b = inp.size(0)
+#         out = self.pool(inp).view(inp.size(0), inp.size(1))
+#         l2_norm = out.pow(2).sum(1).sqrt()
+#         l2_norm_broadcast = l2_norm.view(b,1).repeat(1,inp.shape[1])
+#         return out/l2_norm_broadcast
 
 
 #-----------FEATURE EXPANDERS AND POOLING OPERATIONS, TEST TIME ONLY
