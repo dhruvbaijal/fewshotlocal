@@ -115,6 +115,9 @@ def accumulateFB(models, loader, way, network_width, ngiven, bsize):
             
     return fbcentroids/float(sum(ngiven)) # esize 64 2
 
+# TODO
+# need to write another accum function, that doesn't average tensors to construct centroids
+# accumulates tensors into a list, want to remember all the points rather than an avg of the points from each category
 
 # Accumulate category prototypes
 def accumulate(models, loader, expanders, bcentroids, way, d):
